@@ -32,7 +32,7 @@ model Users {
   conversations Conversations[]
   messages      Messages[]
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Date
+  createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
@@ -53,7 +53,7 @@ model Profiles {
   address         Address?  @relation("address", map: "address")
   serviceLocation Address[] @relation("service_location", map: "service_location")
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Date
+  createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("profiles")
@@ -66,11 +66,11 @@ model Contacts {
   profile   Profiles @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   value       String    @unique @db.VarChar(13)
-  validatedAt DateTime? @map("validated_at") @db.Date
+  validatedAt DateTime? @map("validated_at")
 
   whatsapp Boolean @default(false)
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Date
+  createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("contacts")
@@ -84,9 +84,9 @@ model Socials {
 
   type        TypeSocialEnum
   url         String         @unique @db.Text
-  validatedAt DateTime?      @map("validated_at") @db.Date
+  validatedAt DateTime?      @map("validated_at")
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Date
+  createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("socials")
@@ -106,13 +106,15 @@ model Address {
   complement   String?
   neighborhood String
   city         String
-  state        String  @db.VarChar(2)
+  state        String
+  stateCode    String? @default("") @db.VarChar(2)
   zipCode      String  @map("zip_code") @db.VarChar(8)
-  country      String  @db.VarChar(2)
+  country      String
+  countryCode  String? @default("") @db.VarChar(2)
   longitude    Float
   latitude     Float
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Date
+  createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("address")
@@ -125,7 +127,7 @@ model Specialties {
 
   profile Profiles[]
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Date
+  createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("specialties")
@@ -138,7 +140,7 @@ model Approach {
 
   profile Profiles[]
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Date
+  createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("approach")
@@ -151,7 +153,7 @@ model Conversations {
 
   messages Messages[]
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Date
+  createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("conversations")
@@ -171,7 +173,7 @@ model Messages {
 
   viewers String[]
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Date
+  createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("messages")

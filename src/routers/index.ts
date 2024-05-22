@@ -1,5 +1,6 @@
 import Http from '@/service/http';
 
+import { routerAnalytics } from './analytics';
 import { routerAuth } from './auth';
 import { routerConversations } from './conversations';
 import { routerProfessionals } from './professionals';
@@ -9,4 +10,5 @@ export const routers = new Http({
 })
   .use(routerAuth)
   .use(routerConversations)
-  .use(routerProfessionals);
+  .use(routerProfessionals)
+  .use(routerAnalytics);

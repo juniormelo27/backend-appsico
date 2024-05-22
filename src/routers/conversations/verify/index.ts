@@ -2,14 +2,14 @@ import Http, { context } from '@/service/http';
 import { t } from 'elysia';
 
 export const verify = new Http().use(context).post(
-  '/verify',
-  async ({ body, db }) => {
+  '/verify/:user1/:user2',
+  async ({ params, db }) => {
     const isConversations = await db.conversations.findFirst({
       where: {
         users: {
           every: {
             id: {
-              in: body.users,
+              in: [params.user1, params.user2],
             },
           },
         },
@@ -28,7 +28,7 @@ export const verify = new Http().use(context).post(
     const conversation = await db.conversations.create({
       data: {
         users: {
-          connect: body.users.map((item) => ({
+          connect: [params.user1, params.user2].map((item) => ({
             id: item,
           })),
         },
@@ -43,8 +43,9 @@ export const verify = new Http().use(context).post(
     };
   },
   {
-    body: t.Object({
-      users: t.Array(t.String()),
+    params: t.Object({
+      user1: t.String(),
+      user2: t.String(),
     }),
     response: {
       200: t.Object({

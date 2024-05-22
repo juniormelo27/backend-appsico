@@ -17,22 +17,24 @@ export const register = new Http()
         });
       }
 
-      await db.users.create({
-        data: {
-          type: body.type,
-          name: body.name,
-          email: body.email,
-          phone: body.phone,
-          password: await Bun.password.hash(body.password),
-          registration: body.registration,
-        },
-      });
+      await db.$transaction(async (db) => {
+        await db.users.create({
+          data: {
+            type: body.type,
+            name: body.name,
+            email: body.email,
+            phone: body.phone,
+            password: await Bun.password.hash(body.password),
+            registration: body.registration,
+          },
+        });
 
-      await email.emails.send({
-        from: emailFrom,
-        to: body.email,
-        subject: 'Boas vindas ao Appsico!',
-        react: TemplateWelcomeProfile(),
+        await email.emails.send({
+          from: emailFrom,
+          to: body.email,
+          subject: 'Boas vindas ao Appsico!',
+          react: TemplateWelcomeProfile(),
+        });
       });
 
       set.status = 'Created';

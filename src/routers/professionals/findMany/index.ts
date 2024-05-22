@@ -1,5 +1,5 @@
 import Http, { context } from '@/service/http';
-import { Prisma, TypeServicesEnum, TypeUserEnum } from '@prisma/client';
+import { Prisma, TypeServicesEnum } from '@prisma/client';
 import { t } from 'elysia';
 
 export const findMany = new Http().use(context).get(
@@ -31,7 +31,6 @@ export const findMany = new Http().use(context).get(
         take: take + 1,
         select: {
           id: true,
-          type: true,
           name: true,
           image: true,
           profile: {
@@ -60,7 +59,7 @@ export const findMany = new Http().use(context).get(
           },
         },
         orderBy: {
-          id: 'desc',
+          id: 'asc',
         },
       }),
       db.users.findMany({
@@ -72,13 +71,13 @@ export const findMany = new Http().use(context).get(
               }
             : undefined,
         },
+        take: take,
         select: {
           id: true,
         },
         orderBy: {
-          id: 'asc',
+          id: 'desc',
         },
-        take: take,
       }),
       db.users.count({
         where,
@@ -100,7 +99,6 @@ export const findMany = new Http().use(context).get(
         : undefined,
       data: data.slice(0, take).map((item) => ({
         id: item.id,
-        type: item.type,
         name: item.name,
         image: item.image || undefined,
         profile: item.profile
@@ -122,7 +120,6 @@ export const findMany = new Http().use(context).get(
       data: t.Array(
         t.Object({
           id: t.String(),
-          type: t.Enum(TypeUserEnum),
           name: t.String(),
           image: t.Optional(t.String()),
           profile: t.Optional(
