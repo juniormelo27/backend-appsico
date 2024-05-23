@@ -50,7 +50,7 @@ export const last = new Http().use(context).get(
         name: item.name,
         image: item.image || undefined,
       })),
-      messages: {
+      message: {
         id: data.messages[0].id,
         type: data.messages[0].type,
         content: data.messages[0].content,
@@ -74,7 +74,7 @@ export const last = new Http().use(context).get(
             image: t.Optional(t.String()),
           })
         ),
-        messages: t.Object({
+        message: t.Object({
           id: t.String(),
           type: t.Enum(TypeMessageEnum),
           content: t.String(),
