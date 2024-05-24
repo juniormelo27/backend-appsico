@@ -7,7 +7,7 @@
     "build": "NIXPACKS_LIBS=openssl bunx prisma migrate deploy && bunx prisma generate && bun build src/index.ts",
     "start": "NODE_ENV=production bun --bun src/index.ts",
     "test": "bun test",
-    "git-push": "git add . && git commit -m 'updated' && git push"
+    "git": "git add . && git commit -m 'updated' && git push"
   },
   "prettier": {
     "singleQuote": true,
