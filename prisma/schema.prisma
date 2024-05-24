@@ -1,7 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
-  binaryTargets = ["native", "debian-openssl-3.0.x"]
+  binaryTargets   = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -108,10 +108,10 @@ model Address {
   neighborhood String
   city         String
   state        String
-  stateCode    String? @default("") @db.VarChar(2)
+  stateCode    String  @default("") @db.VarChar(2)
   zipCode      String  @map("zip_code") @db.VarChar(8)
   country      String
-  countryCode  String? @default("") @db.VarChar(2)
+  countryCode  String  @default("") @db.VarChar(2)
   longitude    Float
   latitude     Float
 
