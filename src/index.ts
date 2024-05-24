@@ -5,4 +5,13 @@ import { websocket } from './routers/websocket';
 
 import environment from './libraries/environment';
 
-new Http().use(routers).use(websocket).listen(environment.port);
+const server = new Http()
+  .use(routers)
+  .use(websocket)
+  .listen(environment.port, ({ url, port, development }) => {
+    console.log('Servidor iniciado....');
+    console.log('URL:', url.host);
+    console.log('PORTA:', port);
+
+    console.log('Modo produção:', !development);
+  });
