@@ -46,7 +46,7 @@ model Profiles {
   bio         String             @db.Text
   specialties Specialties[]
   approach    Approach[]
-  service     TypeServicesEnum[]
+  services     TypeServicesEnum[]
 
   socials  Socials[]
   contacts Contacts[]

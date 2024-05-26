@@ -12,8 +12,11 @@ export const findById = new Http().use(context).get(
       },
       select: {
         id: true,
+        type: true,
         name: true,
         image: true,
+        email: true,
+        phone: true,
         profile: {
           select: {
             bio: true,
@@ -35,7 +38,7 @@ export const findById = new Http().use(context).get(
                 name: true,
               },
             },
-            service: true,
+            services: true,
             address: {
               select: {
                 street: true,
@@ -67,33 +70,29 @@ export const findById = new Http().use(context).get(
       });
     }
 
-    if (!response.profile || !response.profile.address) {
-      return error('Bad Request', {
-        message: 'Profissional sem perfil cadastrado',
-      });
-    }
-
     return {
       id: response.id,
       name: response.name,
       image: response.image || undefined,
       profile: {
-        bio: response.profile.bio,
-        specialties: response.profile.specialties,
-        approach: response.profile.approach,
-        service: response.profile.service,
+        bio: response.profile?.bio!,
+        specialties: response.profile?.specialties!,
+        approach: response.profile?.approach!,
+        service: response.profile?.services!,
       },
       address: {
-        street: response.profile.address.street,
-        number: response.profile.address.number,
-        complement: response.profile.address.complement || undefined,
-        neighborhood: response.profile.address.neighborhood,
-        city: response.profile.address.city,
-        state: response.profile.address.state,
-        state_code: response.profile.address.stateCode,
-        country: response.profile.address.country,
-        country_code: response.profile.address.countryCode,
+        street: response.profile?.address?.street!,
+        number: response.profile?.address?.number!,
+        complement: response.profile?.address?.complement || undefined!,
+        neighborhood: response.profile?.address?.neighborhood!,
+        city: response.profile?.address?.city!,
+        state: response.profile?.address?.state!,
+        state_code: response.profile?.address?.stateCode!,
+        country: response.profile?.address?.country!,
+        country_code: response.profile?.address?.countryCode!,
       },
+      email: response.email,
+      phone: response.phone,
       _count: {
         followers: response._count.followers,
         following: response._count.following,
@@ -107,39 +106,45 @@ export const findById = new Http().use(context).get(
         id: t.String(),
         name: t.String(),
         image: t.Optional(t.String()),
-        profile: t.Optional(
+        profile: t.Partial(
+          t.Optional(
+            t.Object({
+              bio: t.String(),
+              approach: t.Optional(
+                t.Array(
+                  t.Object({
+                    id: t.String(),
+                    name: t.String(),
+                  })
+                )
+              ),
+              specialties: t.Optional(
+                t.Array(
+                  t.Object({
+                    id: t.String(),
+                    name: t.String(),
+                  })
+                )
+              ),
+              service: t.Array(t.Enum(TypeServicesEnum)),
+            })
+          )
+        ),
+        email: t.String(),
+        phone: t.String(),
+        address: t.Partial(
           t.Object({
-            bio: t.String(),
-            approach: t.Optional(
-              t.Array(
-                t.Object({
-                  id: t.String(),
-                  name: t.String(),
-                })
-              )
-            ),
-            specialties: t.Optional(
-              t.Array(
-                t.Object({
-                  id: t.String(),
-                  name: t.String(),
-                })
-              )
-            ),
-            service: t.Array(t.Enum(TypeServicesEnum)),
+            street: t.String(),
+            number: t.Number(),
+            complement: t.Optional(t.String()),
+            neighborhood: t.String(),
+            city: t.String(),
+            state: t.String(),
+            state_code: t.String(),
+            country: t.String(),
+            country_code: t.String(),
           })
         ),
-        address: t.Object({
-          street: t.String(),
-          number: t.Number(),
-          complement: t.Optional(t.String()),
-          neighborhood: t.String(),
-          city: t.String(),
-          state: t.String(),
-          state_code: t.String(),
-          country: t.String(),
-          country_code: t.String(),
-        }),
         _count: t.Object({
           followers: t.Number(),
           following: t.Number(),
