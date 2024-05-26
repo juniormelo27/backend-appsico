@@ -8,7 +8,6 @@ export const forgot = new Http()
   .post(
     '/forgot-password',
     async ({ body: { email: value }, error, db }) => {
-      console.log(value);
       const data = await db.users.findUnique({
         where: {
           email: value,
@@ -62,5 +61,4 @@ export const forgot = new Http()
     return {
       message,
     };
-  })
-  .onError(({ code, error }) => console.log(code, error));
+  });
