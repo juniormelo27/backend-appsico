@@ -7,13 +7,16 @@ export const updated = new Http().use(context).patch(
   async ({ body, params: { id }, db }) => {
     await db.$transaction(
       async (db) => {
-        await db.users.update({
+        const user = await db.users.update({
           where: {
             id,
           },
           data: {
             email: body.email,
             phone: body.phone ? body.phone.padStart(13, '55') : undefined,
+          },
+          select: {
+            type: true,
           },
         });
 
@@ -90,9 +93,14 @@ export const updated = new Http().use(context).patch(
           const address = body.address;
 
           const addressId = await db.address.findFirst({
-            where: {
-              profileId: id,
-            },
+            where:
+              user.type === 'patient'
+                ? {
+                    userId: id,
+                  }
+                : {
+                    profileId: id,
+                  },
             select: {
               id: true,
             },
@@ -101,7 +109,8 @@ export const updated = new Http().use(context).patch(
           if (!addressId) {
             await db.address.create({
               data: {
-                profileId: id,
+                profileId: user.type === 'professional' ? id : undefined,
+                userId: user.type === 'patient' ? id : undefined,
                 displayName: address.display_name!,
                 street: address.street!,
                 number: address.number!,
