@@ -22,7 +22,7 @@ export const follow = new Http().use(context).patch(
     };
   },
   {
-    type: 'json',
+    type: 'application/json',
     body: t.Object({
       user: t.String(),
     }),

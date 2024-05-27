@@ -43,7 +43,7 @@ export const verify = new Http().use(context).post(
     };
   },
   {
-    type: 'json',
+    type: 'application/json',
     params: t.Object({
       user1: t.String(),
       user2: t.String(),

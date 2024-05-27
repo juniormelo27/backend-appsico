@@ -39,8 +39,9 @@ export const findById = new Http().use(context).get(
               },
             },
             services: true,
-            address: {
+            serviceLocation: {
               select: {
+                displayName: true,
                 street: true,
                 number: true,
                 complement: true,
@@ -50,6 +51,9 @@ export const findById = new Http().use(context).get(
                 stateCode: true,
                 country: true,
                 countryCode: true,
+                zipCode: true,
+                longitude: true,
+                latitude: true,
               },
             },
           },
@@ -81,15 +85,20 @@ export const findById = new Http().use(context).get(
         service: response.profile?.services!,
       },
       address: {
-        street: response.profile?.address?.street!,
-        number: response.profile?.address?.number!,
-        complement: response.profile?.address?.complement || undefined!,
-        neighborhood: response.profile?.address?.neighborhood!,
-        city: response.profile?.address?.city!,
-        state: response.profile?.address?.state!,
-        state_code: response.profile?.address?.stateCode!,
-        country: response.profile?.address?.country!,
-        country_code: response.profile?.address?.countryCode!,
+        display_name: response.profile?.serviceLocation?.[0]?.displayName!,
+        street: response.profile?.serviceLocation?.[0]?.street!,
+        number: response.profile?.serviceLocation?.[0]?.number!,
+        complement:
+          response.profile?.serviceLocation?.[0]?.complement || undefined!,
+        neighborhood: response.profile?.serviceLocation?.[0]?.neighborhood!,
+        city: response.profile?.serviceLocation?.[0]?.city!,
+        state: response.profile?.serviceLocation?.[0]?.state!,
+        state_code: response.profile?.serviceLocation?.[0]?.stateCode!,
+        country: response.profile?.serviceLocation?.[0]?.country!,
+        country_code: response.profile?.serviceLocation?.[0]?.countryCode!,
+        zip_code: response.profile?.serviceLocation?.[0]?.zipCode!,
+        latitude: response.profile?.serviceLocation?.[0]?.latitude!,
+        longitude: response.profile?.serviceLocation?.[0]?.longitude!,
       },
       email: response.email,
       phone: response.phone,
@@ -134,6 +143,7 @@ export const findById = new Http().use(context).get(
         phone: t.String(),
         address: t.Partial(
           t.Object({
+            display_name: t.String(),
             street: t.String(),
             number: t.Number(),
             complement: t.Optional(t.String()),
@@ -143,6 +153,9 @@ export const findById = new Http().use(context).get(
             state_code: t.String(),
             country: t.String(),
             country_code: t.String(),
+            zip_code: t.String(),
+            latitude: t.Number(),
+            longitude: t.Number(),
           })
         ),
         _count: t.Object({
