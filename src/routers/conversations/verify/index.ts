@@ -28,9 +28,14 @@ export const verify = new Http().use(context).post(
     const conversation = await db.conversations.create({
       data: {
         users: {
-          connect: [params.user1, params.user2].map((item) => ({
-            id: item,
-          })),
+          connect: [
+            {
+              id: params.user1,
+            },
+            {
+              id: params.user2,
+            },
+          ],
         },
       },
       select: {
