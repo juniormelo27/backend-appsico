@@ -8,7 +8,6 @@ export const findById = new Http().use(context).get(
     const response = await db.users.findUnique({
       where: {
         id,
-        type: 'professional',
       },
       select: {
         id: true,

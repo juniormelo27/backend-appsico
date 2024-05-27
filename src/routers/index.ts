@@ -5,6 +5,7 @@ import { routerAnalytics } from './analytics';
 import { routerAuth } from './auth';
 import { routerConversations } from './conversations';
 import { routerProfessionals } from './professionals';
+import { routerUsers } from './user';
 import { routerUtils } from './utils';
 
 export const routers = new Http({
@@ -13,6 +14,7 @@ export const routers = new Http({
   .use(routerAuth)
   .use(routerConversations)
   .use(routerProfessionals)
+  .use(routerUsers)
   .use(routerAnalytics)
   .use(routerUtils)
   .onError(({ code, error }) => {

@@ -1,6 +1,7 @@
 import Http from '@/service/http';
+
+import { findById } from '../user/findById';
 import { approach } from './approach';
-import { findById } from './findById';
 import { findMany } from './findMany';
 import { services } from './services';
 import { social } from './social';
