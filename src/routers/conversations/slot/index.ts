@@ -34,8 +34,6 @@ export const slots = new Http({
         },
       });
 
-      console.log(data);
-
       return {
         data: data.flatMap((item) => item.id),
       };
